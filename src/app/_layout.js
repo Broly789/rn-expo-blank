@@ -26,7 +26,7 @@ export default function RootLayout() {
         headerTitleStyle: {
           fontWeight: 'bold',
         },
-        headerBackButtonDisplayMode: 'minimal',
+        headerBackButtonDisplayMode: 'minimal', // 🔥 核心修改：只显示返回按钮，不显示文字
         // 🔥 只需要加这两行，彻底解决跳动
         headerHeight: 56, // 固定标题栏高度
         headerTransparent: false, // 确保标题栏不透明
@@ -45,7 +45,8 @@ export default function RootLayout() {
         }}
       />
       <Stack.Screen name="detail" options={{ title: '详情' }} />
-      <Stack.Screen name="notifications" options={{ title: '通知' }} />
+      <Stack.Screen name="notifications/index" options={{ title: '通知' }} />
+      <Stack.Screen name="notifications/[id]" options={{ title: '通知详情' }} />
     </Stack>
   )
 }

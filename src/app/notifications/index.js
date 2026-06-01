@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+import { useRouter } from 'expo-router'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import {
   FlatList,
@@ -54,6 +55,7 @@ export default function NotificationsPage() {
   const [refreshing, setRefreshing] = useState(false)
   const [data, setData] = useState(notifications)
   const [loadingMore, setLoadingMore] = useState(false)
+  const router = useRouter()
 
   const generateMockNotifications = useCallback((startIndex) => {
     return [
@@ -98,7 +100,7 @@ export default function NotificationsPage() {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => console.log('点击通知', item.id)}
+      onPress={() => router.push(`/notifications/${item.id}`)}
       activeOpacity={0.7}
       style={styles.cardWrapper}
     >
@@ -212,13 +214,15 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   footer: {
-    paddingVertical: 16,
+    flexDirection: 'row',
+    // paddingVertical: 16,
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
   },
   footerText: {
     color: '#6B7280',
     fontSize: 14,
-    marginTop: 8,
   },
   emptyState: {
     marginTop: 80,

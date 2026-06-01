@@ -2,6 +2,7 @@ import { Stack } from 'expo-router'
 import { TouchableOpacity } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { StyleSheet, Image } from 'react-native'
+import Ionicons from '@expo/vector-icons/Ionicons'
 
 function TabBarIcon(props) {
   return (
@@ -22,12 +23,15 @@ export default function VideosStack() {
         headerStyle: {
           backgroundColor: '#1f99b0',
         },
+        headerLargeTitle: true,
+        headerShadowVisible: false,
+        headerTransparent: true,
         headerTintColor: '#fff',
         headerTitleStyle: { fontSize: 18, fontWeight: 'bold' },
         headerTitleAlign: 'center',
-        headerRight: () => TabBarIcon({ name: 'plus', color: '#1f99b0' }),
+        headerRight: () => <Ionicons name="add-outline" size={32} color="#fff" />,
 
-        headerLeft: () => <TabBarIcon name="alipay-circle" color="#1f99b0" />,
+        headerLeft: () => <TabBarIcon name="alipay-circle" color="#fff" />,
         // 外层也给固定高度，统一渲染基准
       }}
     >
@@ -35,7 +39,7 @@ export default function VideosStack() {
         name="index"
         options={{
           title: '视频',
-          headerTitle: (props) => <LogoTitle {...props} />,
+          // headerTitle: (props) => <LogoTitle {...props} />,
         }}
       />
     </Stack>

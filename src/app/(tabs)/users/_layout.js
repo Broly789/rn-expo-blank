@@ -9,7 +9,6 @@ export default function UsersStack() {
         headerStyle: {
           backgroundColor: '#1976D2', // 深蓝
         },
-        headerHeight: 56, // 固定标题栏高度
         // 标题文字颜色 + 返回按钮颜色
         headerTintColor: '#fff', // 白色
         // 标题字体样式
