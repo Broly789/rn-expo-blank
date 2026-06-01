@@ -1,13 +1,19 @@
 import { View, Text, StyleSheet } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
-import { WebView } from 'react-native-webview' // 必须先安装
+import ProcessWebView from '../../components/ProgressWebView'
 
 export default function NotificationDetail() {
   const { id } = useLocalSearchParams()
 
   // 干净无错误的 HTML
   const htmlContent = `
-    <div style="padding:15px; font-size:16px; line-height:1.8;">
+   <!DOCTYPE html>
+  <html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  </head>
+  <body>
+    <div style="padding: 0 15px 15px; font-size:16px; line-height:1.8;">
       <h2>人工智能如何改变未来生活</h2>
       <p>随着技术的快速发展，人工智能已经逐渐渗透到我们生活的方方面面。</p>
       <h3>一、智能家居</h3>
@@ -22,20 +28,17 @@ export default function NotificationDetail() {
       </ul>
       <p>未来，人工智能将进一步提升生活品质，成为人类最可靠的助手。</p>
     </div>
+     </body>
+  </html>
   `
 
+  const source = id % 2 === 0 ? { html: htmlContent } : { uri: 'https://news.qq.com/' }
   return (
     <View style={styles.container}>
-      {/* 顶部标题 */}
-      <View style={styles.header}>
-        <Text style={styles.title}>通知详情</Text>
-        <Text style={styles.idText}>ID：{id}</Text>
-      </View>
-
       {/* WebView 独占剩余空间 */}
-      <WebView
+      <ProcessWebView
         style={styles.webview}
-        source={{ html: htmlContent }}
+        source={source}
         originWhitelist={['*']}
         scrollEnabled={true}
       />
@@ -47,20 +50,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  header: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  idText: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 4,
   },
   webview: {
     flex: 1, // 关键！让 WebView 占满剩下屏幕
