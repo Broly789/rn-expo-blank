@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-import { StyleSheet, TextInput, Text, View } from 'react-native'
-import { Link, useNavigation, useFocusEffect } from 'expo-router'
+import { StyleSheet, Text } from 'react-native'
+import { Link } from 'expo-router'
 
 export default function Users() {
   return (

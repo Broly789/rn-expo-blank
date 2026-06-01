@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start -c",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "loc": "EXPO_OFFLINE=1 npx expo start -c --localhost --ios"
   },
   "dependencies": {
     "expo": "~54.0.33",
