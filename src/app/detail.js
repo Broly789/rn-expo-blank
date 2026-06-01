@@ -1,15 +1,12 @@
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { StyleSheet, TextInput, Text, View } from 'react-native'
 import { Link } from 'expo-router'
 
 export default function Detail() {
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <Text>My Detail</Text>
-        <Link href="/">Jump to Home</Link>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <View style={styles.container}>
+      <Text>My Detail</Text>
+      <Link href="/">Jump to Home</Link>
+    </View>
   )
 }
 

@@ -1,6 +1,10 @@
-import { Stack } from 'expo-router'
+import { Pressable, StyleSheet } from 'react-native'
+import { Stack, useRouter } from 'expo-router'
+import Ionicons from '@expo/vector-icons/Ionicons'
 
 export default function UsersStack() {
+  const router = useRouter()
+
   // 一写这个，首页就有标题栏了
   return (
     <Stack
@@ -16,6 +20,9 @@ export default function UsersStack() {
           fontSize: 18,
           fontWeight: 'bold',
         },
+        headerShadowVisible: true,
+        // headerTransparent: false,
+
         // 安卓标题居中
         headerTitleAlign: 'center',
       }}
@@ -26,8 +33,20 @@ export default function UsersStack() {
         options={{
           title: '用户', // iOS 原生弹性动画关掉（关键）
           shadowColor: 'transparent',
+          headerRight: () => (
+            <Pressable style={styles.iconButton} onPress={() => router.push('/settings')}>
+              <Ionicons name="settings-outline" size={24} color="#fff" />
+            </Pressable>
+          ),
         }}
       />
     </Stack>
   )
 }
+
+const styles = StyleSheet.create({
+  iconButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+})

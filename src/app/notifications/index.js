@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react'
 import { useRouter } from 'expo-router'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import {
   FlatList,
   View,
@@ -115,42 +114,36 @@ export default function NotificationsPage() {
   )
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.pageTitle}>通知</Text>
-        </View>
-
-        <FlatList
-          data={data}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-          contentContainerStyle={styles.container}
-          showsVerticalScrollIndicator={false}
-          onEndReached={onEndReached}
-          onEndReachedThreshold={0.4}
-          ListFooterComponent={
-            loadingMore ? (
-              <View style={styles.footer}>
-                <ActivityIndicator size="small" color="#0B69FF" />
-                <Text style={styles.footerText}>正在加载更多...</Text>
-              </View>
-            ) : null
-          }
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor="#0B69FF"
-              title="下拉刷新"
-              titleColor="#0B69FF"
-              colors={['#0B69FF']}
-            />
-          }
-          ListEmptyComponent={<ListEmptyComponent title="当前没有新通知😊" subtitle="" />}
-        />
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <View style={styles.safeArea}>
+      <FlatList
+        data={data}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        contentContainerStyle={styles.container}
+        showsVerticalScrollIndicator={false}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.4}
+        ListFooterComponent={
+          loadingMore ? (
+            <View style={styles.footer}>
+              <ActivityIndicator size="small" color="#0B69FF" />
+              <Text style={styles.footerText}>正在加载更多...</Text>
+            </View>
+          ) : null
+        }
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#0B69FF"
+            title="下拉刷新"
+            titleColor="#0B69FF"
+            colors={['#0B69FF']}
+          />
+        }
+        ListEmptyComponent={<ListEmptyComponent title="当前没有新通知😊" subtitle="" />}
+      />
+    </View>
   )
 }
 
@@ -167,12 +160,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '800',
     color: '#111827',
-  },
-  headerContainer: {
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    paddingBottom: 14,
-    backgroundColor: '#F8FAFF',
   },
 
   // 卡片外层包装（负责间距）

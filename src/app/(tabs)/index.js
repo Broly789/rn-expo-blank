@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { useRouter, useFocusEffect, useNavigation } from 'expo-router' // 🔥 导入 useNavigation
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import {
   StyleSheet,
   Text,
@@ -71,39 +71,37 @@ export default function App() {
   const router = useRouter()
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.safeArea}>
-        <ScrollView
-          contentContainerStyle={styles.page}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor="#0B69FF"
-              title="下拉刷新"
-              titleColor="#0B69FF"
-              colors={['#0B69FF']}
-            />
-          }
-        >
-          <HomeHeader
-            title="欢迎回来，学霸"
-            subtitle="今天学习什么？去探索教育新世界"
-            avatar={Icon}
-            onPressNotification={() => router.push('/notifications')}
-            notificationCount={3}
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView
+        contentContainerStyle={styles.page}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#0B69FF"
+            title="下拉刷新"
+            titleColor="#0B69FF"
+            colors={['#0B69FF']}
           />
-          <SearchBox placeholder="搜索课程、老师、专题" />
-          <CategoryChips categories={categories} />
-          <CourseCarousel courses={featuredCourses} />
-          <QuickModuleGrid modules={quickModules} />
-          <ArticleCard article={article} />
-          <TeacherCard teacher={teacher} />
-          <NoteCard note={note} />
-        </ScrollView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+        }
+      >
+        <HomeHeader
+          title="欢迎回来，学霸"
+          subtitle="今天学习什么？去探索教育新世界"
+          avatar={Icon}
+          onPressNotification={() => router.push('/notifications')}
+          notificationCount={3}
+        />
+        <SearchBox placeholder="搜索课程、老师、专题" />
+        <CategoryChips categories={categories} />
+        <CourseCarousel courses={featuredCourses} />
+        <QuickModuleGrid modules={quickModules} />
+        <ArticleCard article={article} />
+        <TeacherCard teacher={teacher} />
+        <NoteCard note={note} />
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 

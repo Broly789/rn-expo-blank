@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
+    "clwy-react-native-tableview-simple": "^4.5.7",
     "expo": "~54.0.33",
     "expo-constants": "~18.0.13",
     "expo-linking": "~8.0.12",
     "expo-router": "~6.0.24",
     "expo-status-bar": "~3.0.9",
+    "expo-web-browser": "~15.0.11",
     "react": "19.1.0",
     "react-dom": "^19.1.0",
     "react-native": "0.81.5",

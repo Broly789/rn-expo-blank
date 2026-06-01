@@ -1,10 +1,35 @@
 import { useState } from 'react'
 import { View, StyleSheet, ActivityIndicator } from 'react-native'
 import { WebView } from 'react-native-webview'
+import * as WebBrowser from 'expo-web-browser'
 
 export default function CustomWebView({ style, ...props }) {
   const [progress, setProgress] = useState(0)
 
+  const onShouldStartLoadWithRequest = (request) => {
+    const currentUrl = props.source?.uri
+    if (!currentUrl) return true
+
+    console.log('request.url', request.url)
+    console.log('currentUrl', currentUrl)
+
+    // 定义工具函数：移除url的 www 前缀，统一域名
+    const normalizeUrl = (url) => {
+      return url.replace(/^https?:\/\/www\./, 'https://')
+    }
+
+    const normReqUrl = normalizeUrl(request.url)
+    const normCurrUrl = normalizeUrl(currentUrl)
+
+    // 标准化后地址一致 → 内部打开
+    if (normReqUrl === normCurrUrl) {
+      return true
+    }
+
+    // 其他链接 → 外部浏览器打开
+    void WebBrowser.openBrowserAsync(request.url)
+    return false
+  }
   return (
     <View style={[styles.container, style]}>
       {/* 顶部进度条 */}
@@ -33,6 +58,7 @@ export default function CustomWebView({ style, ...props }) {
         javaScriptEnabled={true}
         domStorageEnabled={true}
         allowsInlineMediaPlayback={true}
+        onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         {...props}
       />
     </View>
