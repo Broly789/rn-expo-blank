@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
-  Share, // 已导入
+  Share,
   Alert,
+  Platform, // 🔥 新增：平台判断
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useLocalSearchParams, useRouter } from 'expo-router'
@@ -25,6 +26,8 @@ const COURSE_INFO = {
   isFinished: true,
   summary:
     '本课程从0到1带你掌握Node.js全栈开发，涵盖nvm环境搭建、Express框架、路由中间件、数据库操作、项目部署等核心内容。通过实战项目让你快速上手后端开发，成为全栈工程师。',
+  // 🔥 新增：课程详情页真实链接
+  courseUrl: 'https://clwy.cn/courses/fullstack-node',
   teacher: {
     id: 7701,
     avatar: 'https://picsum.photos/200/200',
@@ -35,7 +38,7 @@ const COURSE_INFO = {
   },
 }
 
-// 🔥 绝对唯一 ID 生成（彻底修复 key 重复）
+// 绝对唯一 ID 生成
 const generateChapters = (page) => {
   return Array.from({ length: 5 }, (_, i) => {
     const uniqueId = page * 1000 + i
@@ -73,40 +76,37 @@ export default function CourseDetail() {
 
   const MAX_PAGES = 3
 
-  // ====================== 🔥 原生分享功能（双平台兼容） ======================
+  // ====================== 🔥 完美兼容 iOS + Android 的分享函数 ======================
   const onShare = async () => {
     try {
-      // 分享内容配置
-      const shareOptions = {
-        // 分享标题
-        title: COURSE_INFO.title,
-        // 分享文字内容（兼容所有平台）
-        message: `【${COURSE_INFO.title}】\n${COURSE_INFO.summary}\n\n讲师：${COURSE_INFO.teacher.name}`,
-        // 分享链接（iOS优先，Android自动拼接）
-        url: 'https://clwy.cn/courses/fullstack-node' || COURSE_INFO.cover,
-        // 分享图片（网络图片，双平台支持）
-        subject: COURSE_INFO.title,
+      // 通用分享内容
+      const baseMessage = `【${COURSE_INFO.title}】\n${COURSE_INFO.summary}\n\n讲师：${COURSE_INFO.teacher.name}`
+
+      let shareOptions
+
+      // 🔥 平台差异化处理（核心修复）
+      if (Platform.OS === 'ios') {
+        // iOS：支持 url 参数，链接单独显示
+        shareOptions = {
+          title: COURSE_INFO.title,
+          message: baseMessage,
+          url: COURSE_INFO.courseUrl,
+        }
+      } else {
+        // Android：不支持 url 参数，必须拼到 message 末尾
+        shareOptions = {
+          title: COURSE_INFO.title,
+          message: `${baseMessage}\n\n立即学习：${COURSE_INFO.courseUrl}`,
+        }
       }
 
-      // 调用系统分享
       const result = await Share.share(shareOptions)
 
-      // 分享结果回调
       if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // 用户已通过指定渠道分享
-          console.log('分享成功')
-        } else {
-          // 用户已分享
-          console.log('分享完成')
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // 用户取消分享
-        console.log('取消分享')
+        console.log('分享成功')
       }
     } catch (error) {
-      // 分享失败
-      Alert.alert('分享失败', '当前不支持分享功能')
+      Alert.alert('分享失败', '请稍后再试')
       console.error('分享错误：', error)
     }
   }
@@ -139,7 +139,6 @@ export default function CourseDetail() {
 
   const renderHeader = () => (
     <View>
-      {/* 顶部封面 */}
       <ImageBackground
         source={{ uri: COURSE_INFO.cover }}
         style={styles.coverContainer}
@@ -158,7 +157,6 @@ export default function CourseDetail() {
         )}
       </ImageBackground>
 
-      {/* 🔥 通透毛玻璃信息栏 */}
       <ImageBackground
         source={{ uri: COURSE_INFO.cover }}
         style={styles.courseInfoBg}
@@ -178,7 +176,6 @@ export default function CourseDetail() {
             <Text style={styles.publishTime}>{COURSE_INFO.publishTime} 发布</Text>
 
             <View style={styles.actionButtons}>
-              {/* 🔥 分享按钮绑定点击事件 */}
               <TouchableOpacity style={styles.actionBtn} onPress={onShare}>
                 <Text style={styles.actionIcon}>↗</Text>
                 <Text style={styles.actionText}>分享</Text>
@@ -195,8 +192,24 @@ export default function CourseDetail() {
     </View>
   )
 
+  /**
+   * 渲染章节列表项的组件函数
+   * @param {object} item - 章节对象，包含章节相关信息
+   * @returns {JSX.Element} - 返回可触摸的章节项组件
+   */
   const renderChapterItem = ({ item }) => (
-    <TouchableOpacity style={styles.chapterItem} activeOpacity={0.8}>
+    <TouchableOpacity
+      style={styles.chapterItem} // 章节项的整体样式
+      activeOpacity={0.8} // 点击时的透明度
+      onPress={() =>
+        // 点击事件处理函数
+        router.push({
+          // 路由跳转
+          pathname: '/chapters/[id]', // 目标路由路径
+          params: { id: item.id }, // 路由参数，传递章节ID
+        })
+      }
+    >
       <View style={styles.chapterLeft}>
         <Text style={styles.chapterTitle} numberOfLines={1}>
           {item.title}
@@ -225,13 +238,11 @@ export default function CourseDetail() {
           </View>
         )}
 
-        {/* 课程简介 */}
         <View style={styles.footerCard}>
           <Text style={styles.footerTitle}>课程简介</Text>
           <Text style={styles.summaryText}>{COURSE_INFO.summary}</Text>
         </View>
 
-        {/* 讲师介绍（可点击跳转） */}
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => {
@@ -310,7 +321,7 @@ const styles = StyleSheet.create({
   },
   coverSubTitle: {
     fontSize: 14,
-    color: 'rgba(255,255,250.9)',
+    color: 'rgba(255,255,255,0.9)',
     marginTop: 4,
   },
   finishedTag: {

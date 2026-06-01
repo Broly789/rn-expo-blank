@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet } from 'react-native'
-import { useLocalSearchParams } from 'expo-router'
+import { View, StyleSheet } from 'react-native'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import ProcessWebView from '../../components/ProgressWebView'
 
 export default function NotificationDetail() {
   const { id } = useLocalSearchParams()
+  const router = useRouter()
 
   // 干净无错误的 HTML
   const htmlContent = `
@@ -32,7 +33,7 @@ export default function NotificationDetail() {
   </html>
   `
 
-  const source = id % 2 === 0 ? { html: htmlContent } : { uri: 'https://news.qq.com/' }
+  const source = id % 2 === 0 ? { html: htmlContent } : { uri: 'https://xw.qq.com/' }
   return (
     <View style={styles.container}>
       {/* WebView 独占剩余空间 */}
@@ -41,6 +42,9 @@ export default function NotificationDetail() {
         source={source}
         originWhitelist={['*']}
         scrollEnabled={true}
+        onExternalBrowserDismiss={() => {
+          // router.back()
+        }}
       />
     </View>
   )

@@ -6,9 +6,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 function CloseButton() {
   const router = useRouter()
   return (
-    <View style={{ width: 30 }}>
+    <View style={{ paddingLeft: 4, alignItems: 'center', justifyContent: 'center' }}>
       <TouchableOpacity onPress={() => router.dismiss()}>
-        <MaterialCommunityIcons name="close" size={30} color="#fff" />
+        <MaterialCommunityIcons name="close" size={28} color="#fff" />
       </TouchableOpacity>
     </View>
   )
@@ -54,6 +54,7 @@ export default function RootLayout() {
           options={({ route }) => ({ title: route.params.title })}
         />
         <Stack.Screen name="course/[id]" options={{ title: '课程详情' }} />
+        <Stack.Screen name="chapters/[id]" options={{ title: '章节详情' }} />
       </Stack>
     </SafeAreaProvider>
   )
