@@ -8,7 +8,7 @@ function CloseButton() {
   return (
     <View style={{ width: 30 }}>
       <TouchableOpacity onPress={() => router.dismiss()}>
-        <MaterialCommunityIcons name="close" size={30} color="#1f99b0" />
+        <MaterialCommunityIcons name="close" size={30} color="#fff" />
       </TouchableOpacity>
     </View>
   )
@@ -53,6 +53,7 @@ export default function RootLayout() {
           name="settings/[url]"
           options={({ route }) => ({ title: route.params.title })}
         />
+        <Stack.Screen name="course/[id]" options={{ title: '课程详情' }} />
       </Stack>
     </SafeAreaProvider>
   )

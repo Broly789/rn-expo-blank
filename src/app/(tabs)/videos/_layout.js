@@ -23,9 +23,8 @@ export default function VideosStack() {
         headerStyle: {
           backgroundColor: '#1f99b0',
         },
-        headerLargeTitle: true,
+        // headerLargeTitle: true,
         headerShadowVisible: false,
-        headerTransparent: true,
         headerTintColor: '#fff',
         headerTitleStyle: { fontSize: 18, fontWeight: 'bold' },
         headerTitleAlign: 'center',
