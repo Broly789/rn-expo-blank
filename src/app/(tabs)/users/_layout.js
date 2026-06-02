@@ -23,7 +23,7 @@ export default function UsersStack() {
       screenOptions={{
         // 标题栏背景色
         headerStyle: {
-          backgroundColor: '#1976D2', // 深蓝
+          backgroundColor: '#1f99b0', // 深蓝
         },
         // 标题文字颜色 + 返回按钮颜色
         headerTintColor: '#fff', // 白色
@@ -43,13 +43,19 @@ export default function UsersStack() {
       <Stack.Screen
         name="index"
         options={{
-          title: '用户', // iOS 原生弹性动画关掉（关键）
+          title: '个人中心',
           shadowColor: 'transparent',
           headerRight: () => (
             <Pressable style={styles.iconButton} onPress={() => router.push('/settings')}>
               <Ionicons name="settings-outline" size={24} color="#fff" />
             </Pressable>
           ),
+        }}
+      />
+      <Stack.Screen
+        name="profile"
+        options={{
+          title: '账户资料',
         }}
       />
     </Stack>

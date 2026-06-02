@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useMemo } from 'react'
 import {
   View,
   StyleSheet,
@@ -50,10 +50,18 @@ export default function VideoPlayer({ videoUrl }) {
   const height = safeArea?.height || screenDim.height || 812
   const isTablet = Device.deviceType === Device.DeviceType.TABLET
 
+  // ✅ 使用 VideoSource 对象，启用缓存加速后续播放
+  const videoSource = useMemo(
+    () => (videoUrl ? { uri: videoUrl, useCaching: true } : null),
+    [videoUrl],
+  )
+
   // ✅ Expo 54 expo-video v3 官方标准写法
-  const player = useVideoPlayer(videoUrl, (instance) => {
+  const player = useVideoPlayer(videoSource, (instance) => {
     instance.loop = false
     instance.timeUpdateEventInterval = 0.5
+    // ⚡ 初始化时立即开始预加载/播放，避免点击播放后等半天才缓冲
+    instance.play()
     console.log('[VideoPlayer] player initialized with URL:', videoUrl)
   })
 
