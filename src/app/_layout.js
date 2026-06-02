@@ -3,7 +3,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { View, TouchableOpacity } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { SessionProvider, useSession } from '@/utils/ctx'
-import { SplashScreenController } from '@/utils/splash'
+// import { SplashScreenController } from '@/utils/splash'
+import SignIn from '@/components/sign-in'
 
 function CloseButton() {
   const router = useRouter()
@@ -20,6 +21,8 @@ function RootLayoutContent() {
   const { session: isLoggedIn, isLoading } = useSession()
 
   if (isLoading) return null
+
+  if (!isLoggedIn) return <SignIn />
 
   return (
     <SafeAreaProvider>
@@ -39,17 +42,11 @@ function RootLayoutContent() {
           // headerTransparent: false, // 确保标题栏不透明
         }}
       >
-        <Stack.Protected guard={!!isLoggedIn}>
-          {/* 🔥 核心修改：关闭整个Tab组的标题栏 */}
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="settings/index" options={{ title: '设置' }} />
-        </Stack.Protected>
-        {/* 当isLoggedIn为false时，默认会按下面顺序 打开第一个未受保护路由页 
-         也可以在其他页面使用Redirect到登录页 */}
-        <Stack.Protected guard={!isLoggedIn}>
-          <Stack.Screen name="sign-in" options={{ title: '登录' }} />
-          {/* 这里也可有多个未包含路由页Stack.Screen */}
-        </Stack.Protected>
+        {/* 🔥 核心修改：关闭整个Tab组的标题栏 */}
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="settings/index" options={{ title: '设置' }} />
+
+        {/* <Stack.Screen name="sign-in" options={{ title: '登录' }} /> */}
         <Stack.Screen
           name="teachers/[id]"
           options={{
@@ -97,7 +94,7 @@ function RootLayoutContent() {
 export default function RootLayout() {
   return (
     <SessionProvider>
-      <SplashScreenController />
+      {/* <SplashScreenController /> */}
       <RootLayoutContent />
     </SessionProvider>
   )

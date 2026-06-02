@@ -48,7 +48,6 @@ export default function Settings() {
           onPress: async () => {
             console.log('安全退出')
             await signOut()
-            router.replace('/sign-in')
           },
         },
       ],
