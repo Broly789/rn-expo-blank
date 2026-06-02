@@ -45,10 +45,9 @@ export default function Settings() {
         {
           title: '安全退出',
           titleTextColor: '#333',
-          onPress: async () => {
+          onPress: () => {
             console.log('安全退出')
-            await signOut()
-            router.replace('/sign-in')
+            signOut()
           },
         },
       ],

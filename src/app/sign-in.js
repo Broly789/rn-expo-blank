@@ -65,8 +65,7 @@ const SignIn = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'center',
-    marginTop: 150,
+    justifyContent: 'center',
     backgroundColor: '#f5f5f5',
   },
   form: {
