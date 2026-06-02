@@ -39,12 +39,18 @@ function RootLayoutContent() {
           // headerTransparent: false, // 确保标题栏不透明
         }}
       >
-        <Stack.Protected guard={!!isLoggedIn}>
-          {/* 🔥 核心修改：关闭整个Tab组的标题栏 */}
+        {/* <Stack.Protected guard={!!isLoggedIn}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="settings/index" options={{ title: '设置' }} />
           <Stack.Screen name="course/[id]" options={{ title: '课程详情' }} />
+        </Stack.Protected> */}
+        {/* 🔥 核心修改：关闭整个Tab组的标题栏 */}
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Protected guard={!!isLoggedIn}>
+          <Stack.Screen name="settings/index" options={{ title: '设置' }} />
         </Stack.Protected>
+        <Stack.Screen name="course/[id]" options={{ title: '课程详情' }} />
+
         {/* 当isLoggedIn为false时，默认会按下面顺序 打开第一个未受保护路由页 
          也可以在其他页面使用Redirect到登录页 */}
         <Stack.Protected guard={!isLoggedIn}>

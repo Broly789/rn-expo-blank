@@ -7,7 +7,7 @@ import { useSession } from '@/utils/ctx'
 
 export default function Settings() {
   const router = useRouter()
-  const { signOut } = useSession()
+  const { signOut, destroyAccount } = useSession()
   const sections = [
     {
       cells: [
@@ -41,15 +41,50 @@ export default function Settings() {
     },
     {
       cells: [
-        { title: '注销账户', titleTextColor: '#999' },
+        {
+          title: '注销账户',
+          titleTextColor: '#999',
+          onPress: () =>
+            Alert.alert('重要提示', '注销后所有数据将被清除且无法恢复，确定要继续吗？', [
+              { text: '取消', style: 'cancel' },
+              {
+                text: '确认注销',
+                style: 'destructive',
+                onPress: async () => {
+                  console.log('注销账户')
+                  Alert.alert(
+                    '重要提示',
+                    '确认提交注销申请，您的账号将会立即停用。可在7天内联系管理员恢复使用。',
+                    [
+                      {
+                        text: '确定',
+                        onPress: async () => {
+                          await destroyAccount()
+                          router.replace('/users')
+                        },
+                      },
+                    ],
+                  )
+                },
+              },
+            ]),
+        },
         {
           title: '安全退出',
           titleTextColor: '#999',
-          onPress: async () => {
-            console.log('安全退出')
-            await signOut()
-            router.replace('/sign-in')
-          },
+          onPress: () =>
+            Alert.alert('确认退出', '确定要退出当前账号吗？', [
+              { text: '取消', style: 'cancel' },
+              {
+                text: '退出',
+                style: 'destructive',
+                onPress: async () => {
+                  console.log('安全退出')
+                  await signOut()
+                  router.replace('/users')
+                },
+              },
+            ]),
         },
       ],
     },

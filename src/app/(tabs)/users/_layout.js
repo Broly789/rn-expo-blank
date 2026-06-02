@@ -2,6 +2,7 @@ import { View, TouchableOpacity, Pressable, StyleSheet } from 'react-native'
 import { Stack, useRouter } from 'expo-router'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { useSession } from '@/utils/ctx'
 
 function CloseButton() {
   const router = useRouter()
@@ -16,6 +17,7 @@ function CloseButton() {
 
 export default function UsersStack() {
   const router = useRouter()
+  const { session } = useSession()
 
   // 一写这个，首页就有标题栏了
   return (
@@ -45,11 +47,12 @@ export default function UsersStack() {
         options={{
           title: '个人中心',
           shadowColor: 'transparent',
-          headerRight: () => (
-            <Pressable style={styles.iconButton} onPress={() => router.push('/settings')}>
-              <Ionicons name="settings-outline" size={24} color="#fff" />
-            </Pressable>
-          ),
+          headerRight: () =>
+            session ? (
+              <Pressable style={styles.iconButton} onPress={() => router.push('/settings')}>
+                <Ionicons name="settings-outline" size={24} color="#fff" />
+              </Pressable>
+            ) : null,
         }}
       />
       <Stack.Screen

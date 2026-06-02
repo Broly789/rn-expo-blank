@@ -7,6 +7,7 @@ const AuthContext = createContext({
   signIn: () => null,
   signUp: () => null,
   signOut: () => null,
+  destroyAccount: () => null,
   session: null,
   isLoading: false,
 })
@@ -76,6 +77,11 @@ export function SessionProvider({ children }) {
           }
         },
         signOut: async () => {
+          await setSession(null)
+        },
+        destroyAccount: async () => {
+          // 请求 delete /auth/account 接口注销账号
+          // await delete({ url: '/auth/account' })
           await setSession(null)
         },
         session,

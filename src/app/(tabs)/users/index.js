@@ -1,71 +1,76 @@
-import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView, Platform } from 'react-native'
 import { useRouter } from 'expo-router'
 import { useSession } from '@/utils/ctx'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import useProfileStore from '@/store/useProfileStore'
 
 export default function Users() {
   const router = useRouter()
   const { session } = useSession()
   const { avatarUri, nickname, bio } = useProfileStore()
+  const insets = useSafeAreaInsets()
   const isLoggedIn = !!session
 
-  // 性别映射
-  const getGenderIcon = (id) => {
-    switch (id) {
-      case 'male':
-        return 'gender-male'
-      case 'female':
-        return 'gender-female'
-      default:
-        return 'gender-transgender'
-    }
+  // 底部 TabBar 高度：原生 TabBar 高度 + 安全区底部
+  const tabBarHeight = (Platform.OS === 'ios' ? 49 : 56) + insets.bottom
+
+  // 未登录 → 仅显示登录页
+  if (!isLoggedIn) {
+    return (
+      <View style={styles.loginContainer}>
+        <View style={styles.loginCard}>
+          <View style={styles.loginAvatarPlaceholder}>
+            <MaterialCommunityIcons name="account-outline" size={48} color="#CBD5E1" />
+          </View>
+          <Text style={styles.loginTitle}>登录后享受完整功能</Text>
+          <Text style={styles.loginDesc}>查看学习记录、管理账户、获取个性化推荐</Text>
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => router.push('/author')}
+            activeOpacity={0.8}
+          >
+            <MaterialCommunityIcons
+              name="login"
+              size={20}
+              color="#fff"
+              style={{ marginRight: 8 }}
+            />
+            <Text style={styles.loginButtonText}>立即登录</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
   }
 
+  // 已登录 → 完整个人中心
   return (
-    <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      contentContainerStyle={[styles.scrollContent, { paddingBottom: tabBarHeight + 16 }]}
+      showsVerticalScrollIndicator={false}
+    >
       {/* ====== 个人资料头部 ====== */}
-      <View style={styles.profileSection}>
+      <TouchableOpacity
+        style={styles.profileSection}
+        activeOpacity={0.85}
+        onPress={() => router.push('/users/profile')}
+      >
         <View style={styles.avatarContainer}>
           {avatarUri ? (
             <Image source={{ uri: avatarUri }} style={styles.avatarImage} />
-          ) : isLoggedIn ? (
+          ) : (
             <View style={styles.avatarCircle}>
               <MaterialCommunityIcons name="account" size={44} color="#fff" />
             </View>
-          ) : (
-            <View style={[styles.avatarCircle, styles.avatarCirclePlaceholder]}>
-              <MaterialCommunityIcons name="account-outline" size={44} color="#B0BEC5" />
-            </View>
           )}
+          <View style={styles.editBadge}>
+            <MaterialCommunityIcons name="pencil" size={12} color="#fff" />
+          </View>
         </View>
 
-        {isLoggedIn ? (
-          <>
-            <Text style={styles.userName}>{nickname}</Text>
-            <Text style={styles.userBio}>{bio || '这个人很懒，什么都没写~'}</Text>
-          </>
-        ) : (
-          <>
-            <Text style={styles.userName}>未登录</Text>
-            <Text style={styles.userBio}>登录后可享受个性化学习体验</Text>
-          </>
-        )}
-
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => router.push('/author')}
-          activeOpacity={0.8}
-        >
-          <MaterialCommunityIcons
-            name={isLoggedIn ? 'account-check' : 'login'}
-            size={18}
-            color="#fff"
-            style={{ marginRight: 6 }}
-          />
-          <Text style={styles.loginButtonText}>{isLoggedIn ? '已登录' : '登录'}</Text>
-        </TouchableOpacity>
-      </View>
+        <Text style={styles.userName}>{nickname}</Text>
+        <Text style={styles.userBio}>{bio || '这个人很懒，什么都没写~'}</Text>
+      </TouchableOpacity>
 
       {/* ====== 学习统计卡片 ====== */}
       <View style={styles.statsRow}>
@@ -172,7 +177,6 @@ export default function Users() {
         </View>
       </View>
     </ScrollView>
-    // </SafeAreaView>
   )
 }
 
@@ -182,7 +186,51 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8FAFF',
   },
   scrollContent: {
-    paddingBottom: 30,
+    // paddingBottom 由 useSafeAreaInsets 动态计算
+  },
+
+  /* ====== 未登录占位 ====== */
+  loginContainer: {
+    flex: 1,
+    backgroundColor: '#F8FAFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 32,
+  },
+  loginCard: {
+    backgroundColor: '#fff',
+    borderRadius: 24,
+    paddingVertical: 40,
+    paddingHorizontal: 32,
+    alignItems: 'center',
+    width: '100%',
+    shadowColor: '#000',
+    shadowOpacity: 0.04,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 4,
+  },
+  loginAvatarPlaceholder: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#F1F5F9',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  loginTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 8,
+  },
+  loginDesc: {
+    fontSize: 14,
+    color: '#94A3B8',
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: 28,
   },
 
   /* ====== 个人资料 ====== */
@@ -220,6 +268,19 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     backgroundColor: '#E2E8F0',
+  },
+  editBadge: {
+    position: 'absolute',
+    bottom: 0,
+    right: -2,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#1f99b0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#fff',
   },
   avatarCirclePlaceholder: {
     backgroundColor: '#E2E8F0',
