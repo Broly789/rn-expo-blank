@@ -1,6 +1,18 @@
-import { Pressable, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, Pressable, StyleSheet } from 'react-native'
 import { Stack, useRouter } from 'expo-router'
 import Ionicons from '@expo/vector-icons/Ionicons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+
+function CloseButton() {
+  const router = useRouter()
+  return (
+    <View style={{ paddingLeft: 4, alignItems: 'center', justifyContent: 'center' }}>
+      <TouchableOpacity onPress={() => router.dismiss()}>
+        <MaterialCommunityIcons name="close" size={28} color="#fff" />
+      </TouchableOpacity>
+    </View>
+  )
+}
 
 export default function UsersStack() {
   const router = useRouter()

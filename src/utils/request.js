@@ -1,5 +1,6 @@
 // request.js
 import { buildUrl } from './index'
+import * as SecureStore from 'expo-secure-store'
 
 const request = async (url, options = {}) => {
   const { method = 'GET', params, body, reqConfig = {} } = options
@@ -7,12 +8,14 @@ const request = async (url, options = {}) => {
   // 接口基础地址（从环境变量取）
   const apiUrl = process.env.EXPO_PUBLIC_API_URL
   const requestUrl = buildUrl(apiUrl, url, params)
-  console.log(requestUrl)
+
+  const token = await SecureStore.getItemAsync('session')
 
   // 请求头
   const headers = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
     // 待完成：在这里加 Authorization token
   }
 

@@ -41,13 +41,14 @@ export default function Settings() {
     },
     {
       cells: [
-        { title: '注销账户', titleTextColor: '#333' },
+        { title: '注销账户', titleTextColor: '#999' },
         {
           title: '安全退出',
-          titleTextColor: '#333',
-          onPress: () => {
+          titleTextColor: '#999',
+          onPress: async () => {
             console.log('安全退出')
-            signOut()
+            await signOut()
+            router.replace('/sign-in')
           },
         },
       ],

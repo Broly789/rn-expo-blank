@@ -43,6 +43,7 @@ function RootLayoutContent() {
           {/* 🔥 核心修改：关闭整个Tab组的标题栏 */}
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="settings/index" options={{ title: '设置' }} />
+          <Stack.Screen name="course/[id]" options={{ title: '课程详情' }} />
         </Stack.Protected>
         {/* 当isLoggedIn为false时，默认会按下面顺序 打开第一个未受保护路由页 
          也可以在其他页面使用Redirect到登录页 */}
@@ -50,6 +51,15 @@ function RootLayoutContent() {
           <Stack.Screen name="sign-in" options={{ title: '登录' }} />
           {/* 这里也可有多个未包含路由页Stack.Screen */}
         </Stack.Protected>
+        <Stack.Screen
+          name="author/index"
+          options={{
+            presentation: 'modal',
+            title: '登录',
+            headerLeft: () => <CloseButton />,
+            animation: 'slide_from_bottom',
+          }}
+        />
         <Stack.Screen
           name="teachers/[id]"
           options={{
@@ -68,9 +78,6 @@ function RootLayoutContent() {
           name="settings/[url]"
           options={({ route }) => ({ title: route.params.title })}
         />
-        {/* <Stack.Protected guard={!!isLoggedIn}> */}
-        <Stack.Screen name="course/[id]" options={{ title: '课程详情' }} />
-        {/* </Stack.Protected> */}
 
         <Stack.Screen
           name="chapters/[id]"
