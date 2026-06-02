@@ -47,6 +47,7 @@ export default function RootLayout() {
         />
         <Stack.Screen name="detail" options={{ title: '详情' }} />
         <Stack.Screen name="settings/index" options={{ title: '设置' }} />
+        <Stack.Screen name="search/index" options={{ title: '搜索' }} />
         <Stack.Screen name="notifications/index" options={{ title: '通知' }} />
         <Stack.Screen name="notifications/[id]" options={{ title: '通知详情' }} />
         <Stack.Screen
@@ -54,7 +55,23 @@ export default function RootLayout() {
           options={({ route }) => ({ title: route.params.title })}
         />
         <Stack.Screen name="course/[id]" options={{ title: '课程详情' }} />
-        <Stack.Screen name="chapters/[id]" options={{ title: '章节详情' }} />
+        <Stack.Screen
+          name="chapters/[id]"
+          options={{
+            title: '章节详情',
+            headerStyle: {
+              backgroundColor: '#ffffff', // 背景白色
+              shadowColor: 'transparent', // 去除底部阴影线（可选）
+            },
+            // 配套修改文字/返回按钮颜色（根据你需求调整）
+            headerTintColor: '#333', // 标题、返回箭头颜色
+            headerTitleStyle: {
+              color: '#333', // 标题文字颜色
+              fontSize: 18,
+              fontWeight: 'bold',
+            },
+          }}
+        />
       </Stack>
     </SafeAreaProvider>
   )

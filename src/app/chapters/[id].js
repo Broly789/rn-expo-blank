@@ -1,11 +1,14 @@
 import { useLocalSearchParams } from 'expo-router'
-import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { useEvent } from 'expo'
+import { View, Text, Button, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { useVideoPlayer, VideoView } from 'expo-video'
 import ProgressWebView from '../../components/ProgressWebView'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import SideMenu from 'react-native-side-menu-updated'
 import { useState } from 'react'
 import ChaptersMenu from '../../components/chaptersMenu'
 import response from '../../mock/chapter'
+import VideoPlayer from '@components/VideoPlayer'
 
 const ChapterDetail = () => {
   const { id } = useLocalSearchParams()
@@ -15,12 +18,18 @@ const ChapterDetail = () => {
   const { course, chapter, chapters } = response.data
   const [selectedChapter, setSelectedChapter] = useState(chapter)
 
+  // const player = useVideoPlayer(chapter.video, (player) => {
+  //   player.loop = false
+  //   // player.play()
+  // })
+
   const onSelectedChapter = (chapterItem) => {
     setURL(`/chapters/${chapterItem.slug}`)
     setInfoURI(`https://clwy.cn/chapters/${chapterItem.slug}/info`)
     setSelectedChapter(chapterItem)
     setIsMenuOpen(false)
   }
+  // const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing })
 
   return (
     <SideMenu
@@ -38,8 +47,10 @@ const ChapterDetail = () => {
       onChange={(menuState) => setIsMenuOpen(menuState)}
     >
       <View style={styles.container}>
-        {/* 视频播放器 */}
-        <View style={{ height: 200 }} />
+        {/* 视频播放器 - 固定高度或 flex 占比 */}
+        <View style={styles.videoPlayerWrapper}>
+          <VideoPlayer videoUrl={chapter.video} />
+        </View>
 
         {/* 切换展开按钮 */}
         <TouchableWithoutFeedback onPress={() => setIsMenuOpen(!isMenuOpen)}>
@@ -62,6 +73,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    flexDirection: 'column',
+  },
+  videoPlayerWrapper: {
+    height: 240,
+    backgroundColor: '#000',
+    overflow: 'hidden',
   },
   sideBarButton: {
     width: 80,
