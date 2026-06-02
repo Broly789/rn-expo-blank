@@ -3,9 +3,11 @@ import SettingsTable from '@components/SettingsTable'
 import * as Linking from 'expo-linking'
 import * as WebBrowser from 'expo-web-browser'
 import { useRouter } from 'expo-router'
+import { useSession } from '@/utils/ctx'
 
 export default function Settings() {
   const router = useRouter()
+  const { signOut } = useSession()
   const sections = [
     {
       cells: [
@@ -38,7 +40,18 @@ export default function Settings() {
       ],
     },
     {
-      cells: [{ title: '注销账户' }, { title: '安全退出', titleTextColor: 'red' }],
+      cells: [
+        { title: '注销账户', titleTextColor: '#333' },
+        {
+          title: '安全退出',
+          titleTextColor: '#333',
+          onPress: async () => {
+            console.log('安全退出')
+            await signOut()
+            router.replace('/sign-in')
+          },
+        },
+      ],
     },
   ]
 

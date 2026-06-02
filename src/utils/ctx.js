@@ -1,4 +1,4 @@
-import { use, createContext, ReactNode } from 'react'
+import { use, createContext } from 'react'
 import { useStorageState } from '@/hooks/useStorageState'
 
 const AuthContext = createContext({
@@ -27,8 +27,8 @@ export function SessionProvider({ children }) {
           // 在这里实现登录逻辑
           setSession('xxx')
         },
-        signOut: () => {
-          setSession(null)
+        signOut: async () => {
+          await setSession(null)
         },
         session,
         isLoading,

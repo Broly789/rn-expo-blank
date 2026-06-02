@@ -2,6 +2,8 @@ import { Stack, useRouter } from 'expo-router'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { View, TouchableOpacity } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { SessionProvider, useSession } from '@/utils/ctx'
+import { SplashScreenController } from '@/utils/splash'
 
 function CloseButton() {
   const router = useRouter()
@@ -14,7 +16,11 @@ function CloseButton() {
   )
 }
 
-export default function RootLayout() {
+function RootLayoutContent() {
+  const { session: isLoggedIn, isLoading } = useSession()
+
+  if (isLoading) return null
+
   return (
     <SafeAreaProvider>
       <Stack
@@ -33,9 +39,17 @@ export default function RootLayout() {
           // headerTransparent: false, // 确保标题栏不透明
         }}
       >
-        {/* 🔥 核心修改：关闭整个Tab组的标题栏 */}
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-
+        <Stack.Protected guard={!!isLoggedIn}>
+          {/* 🔥 核心修改：关闭整个Tab组的标题栏 */}
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="settings/index" options={{ title: '设置' }} />
+        </Stack.Protected>
+        {/* 当isLoggedIn为false时，默认会按下面顺序 打开第一个未受保护路由页 
+         也可以在其他页面使用Redirect到登录页 */}
+        <Stack.Protected guard={!isLoggedIn}>
+          <Stack.Screen name="sign-in" options={{ title: '登录' }} />
+          {/* 这里也可有多个未包含路由页Stack.Screen */}
+        </Stack.Protected>
         <Stack.Screen
           name="teachers/[id]"
           options={{
@@ -46,7 +60,6 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen name="detail" options={{ title: '详情' }} />
-        <Stack.Screen name="settings/index" options={{ title: '设置' }} />
         <Stack.Screen name="search/index" options={{ title: '搜索' }} />
         <Stack.Screen name="search/[keyword]" options={{ title: '搜索结果' }} />
         <Stack.Screen name="notifications/index" options={{ title: '通知' }} />
@@ -55,7 +68,10 @@ export default function RootLayout() {
           name="settings/[url]"
           options={({ route }) => ({ title: route.params.title })}
         />
+        {/* <Stack.Protected guard={!!isLoggedIn}> */}
         <Stack.Screen name="course/[id]" options={{ title: '课程详情' }} />
+        {/* </Stack.Protected> */}
+
         <Stack.Screen
           name="chapters/[id]"
           options={{
@@ -75,5 +91,14 @@ export default function RootLayout() {
         />
       </Stack>
     </SafeAreaProvider>
+  )
+}
+
+export default function RootLayout() {
+  return (
+    <SessionProvider>
+      <SplashScreenController />
+      <RootLayoutContent />
+    </SessionProvider>
   )
 }

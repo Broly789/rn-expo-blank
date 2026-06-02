@@ -31,11 +31,9 @@
       "expo-web-browser",
       [
         "expo-video",
-        {
-          // "supportsBackgroundPlayback": true,
-          // "supportsPictureInPicture": true
-        }
-      ]
+        {}
+      ],
+      "expo-secure-store"
     ]
   }
 }

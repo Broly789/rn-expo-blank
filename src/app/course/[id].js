@@ -39,9 +39,10 @@ const COURSE_INFO = {
 }
 
 // 绝对唯一 ID 生成
+let chapterIdCounter = 0
 const generateChapters = (page) => {
   return Array.from({ length: 5 }, (_, i) => {
-    const uniqueId = page * 1000 + i
+    const uniqueId = ++chapterIdCounter
     const episode = page * 5 + i + 1
     return {
       id: `chapter-${uniqueId}`,
@@ -66,6 +67,13 @@ export default function CourseDetail() {
   const insets = useSafeAreaInsets()
   const { id } = useLocalSearchParams()
   const router = useRouter()
+  // const isAuth = false
+  // useEffect(() => {
+  //   if (!isAuth) {
+  //     // 保存当前详情页路径，登录后可以返回
+  //     router.replace(`/sign-in?redirect=/course/${id}`)
+  //   }
+  // }, [isAuth])
 
   const [chapters, setChapters] = useState([])
   const [page, setPage] = useState(1)
@@ -275,7 +283,7 @@ export default function CourseDetail() {
     <View style={styles.container}>
       <FlatList
         data={chapters}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => `${item.id}-${item.episode}`}
         renderItem={renderChapterItem}
         ListHeaderComponent={renderHeader}
         ListFooterComponent={renderFooter}
