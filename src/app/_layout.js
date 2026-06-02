@@ -48,6 +48,7 @@ export default function RootLayout() {
         <Stack.Screen name="detail" options={{ title: '详情' }} />
         <Stack.Screen name="settings/index" options={{ title: '设置' }} />
         <Stack.Screen name="search/index" options={{ title: '搜索' }} />
+        <Stack.Screen name="search/[keyword]" options={{ title: '搜索结果' }} />
         <Stack.Screen name="notifications/index" options={{ title: '通知' }} />
         <Stack.Screen name="notifications/[id]" options={{ title: '通知详情' }} />
         <Stack.Screen

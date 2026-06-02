@@ -1,11 +1,24 @@
-import { View, StyleSheet, TextInput } from 'react-native'
+import { View, StyleSheet, TextInput, Alert } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { useRouter } from 'expo-router'
 
 export default function Search() {
+  const router = useRouter()
   // 回车搜索
   const submitSearch = (event) => {
     const keyword = event.nativeEvent.text
-    console.log('搜索的关键词：', keyword)
+    const searchKeyword = keyword.trim().toLowerCase()
+    console.log('搜索的关键词：', searchKeyword)
+    if (!searchKeyword) {
+      Alert.alert('搜索内容不能为空')
+      return
+    }
+    router.push({
+      pathname: '/search/[keyword]',
+      params: {
+        keyword: searchKeyword,
+      },
+    })
   }
 
   return (

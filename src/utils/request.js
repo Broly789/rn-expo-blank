@@ -1,12 +1,12 @@
 // request.js
-import urlcat from 'urlcat'
+import { buildUrl } from './index'
 
 const request = async (url, options = {}) => {
   const { method = 'GET', params, body, reqConfig = {} } = options
 
   // 接口基础地址（从环境变量取）
   const apiUrl = process.env.EXPO_PUBLIC_API_URL
-  const requestUrl = urlcat(apiUrl, url, params)
+  const requestUrl = buildUrl(apiUrl, url, params)
   console.log(requestUrl)
 
   // 请求头

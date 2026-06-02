@@ -1,6 +1,16 @@
-import { View, TextInput, StyleSheet } from 'react-native'
+import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 
-export default function SearchBox({ placeholder }) {
+export default function SearchBox({ placeholder, onPress }) {
+  if (onPress) {
+    return (
+      <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.8}>
+        <Ionicons name="search-outline" size={18} color="#9CA3AF" style={{ marginRight: 8 }} />
+        <Text style={styles.placeholder}>{placeholder}</Text>
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <View style={styles.container}>
       <TextInput placeholder={placeholder} placeholderTextColor="#9CA3AF" style={styles.input} />
@@ -19,9 +29,17 @@ const styles = StyleSheet.create({
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 8 },
     elevation: 3,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   input: {
     fontSize: 16,
     color: '#111827',
+    flex: 1,
+  },
+  placeholder: {
+    fontSize: 16,
+    color: '#9CA3AF',
+    flex: 1,
   },
 })

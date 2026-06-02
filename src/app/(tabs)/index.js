@@ -93,7 +93,7 @@ export default function App() {
           onPressNotification={() => router.push('/notifications')}
           notificationCount={3}
         />
-        <SearchBox placeholder="搜索课程、老师、专题" />
+        <SearchBox placeholder="搜索课程、老师、专题" onPress={() => router.push('/search')} />
         <CategoryChips categories={categories} />
         <CourseCarousel courses={featuredCourses} />
         <QuickModuleGrid modules={quickModules} />
