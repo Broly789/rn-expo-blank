@@ -6,7 +6,6 @@ import { SessionProvider, useSession } from '@/utils/ctx'
 import { SplashScreenController } from '@/utils/splash'
 import PrivacyPolicyModal from '@/components/PrivacyPolicyModal'
 import usePrivacyStore from '@/store/usePrivacyStore'
-
 function CloseButton() {
   const router = useRouter()
   return (
