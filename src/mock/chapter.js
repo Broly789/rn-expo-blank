@@ -10,8 +10,7 @@ export default {
       id: 117,
       slug: 'fullstack-node-intro',
       title: '课程介绍 ',
-      video:
-        'https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/mp4/xgplayer-demo-360p.mp4',
+      video: 'http://vjs.zencdn.net/v/oceans.mp4',
       published: true,
       rank: 1,
       content: '',

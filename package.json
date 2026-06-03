@@ -7,7 +7,8 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "loc": "EXPO_OFFLINE=1 npx expo start -c --localhost --ios"
+    "loc": "EXPO_OFFLINE=1 npx expo start -c --localhost --ios",
+    "ios:simulator": "open -a simulator"
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
@@ -16,6 +17,7 @@
     "clwy-expo-scrollable-tab-view": "^1.1.5",
     "clwy-react-native-tableview-simple": "^4.5.7",
     "expo": "~54.0.33",
+    "expo-build-properties": "~1.0.10",
     "expo-constants": "~18.0.13",
     "expo-device": "~8.0.10",
     "expo-image-picker": "~17.0.11",

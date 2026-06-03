@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "blank-app",
-    "slug": "blank-app",
+    "name": "Solar",
+    "slug": "solar-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon-light.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
-    "scheme": "myapp",
+    "scheme": "solar",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -15,7 +15,11 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.brolly.blankapp"
+      "bundleIdentifier": "com.broly.solar",
+      "icon": {
+        "light": "./assets/icon-light.png",
+        "dark": "./assets/icon-dark.png"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -24,11 +28,31 @@
       },
       "softwareKeyboardLayoutMode": "pan",
       "edgeToEdgeEnabled": true,
-      "package": "com.brolly.blankapp"
+      "package": "com.broly.solar"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-router", "expo-web-browser", ["expo-video", {}], "expo-secure-store"]
+    "plugins": [
+      "expo-router",
+      "expo-web-browser",
+      ["expo-video", {}],
+      "expo-secure-store",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 36,
+            "targetSdkVersion": 36,
+            "buildToolsVersion": "36.0.0",
+            "buildArchs": ["arm64-v8a"], // 默认打包时 会生成32位和64位的apk 这里只保留64位的apk
+            "usesCleartextTraffic": true // 支持http请求
+          },
+          "ios": {
+            "deploymentTarget": "16.4"
+          }
+        }
+      ]
+    ]
   }
 }

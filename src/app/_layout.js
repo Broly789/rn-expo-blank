@@ -1,9 +1,11 @@
 import { Stack, useRouter } from 'expo-router'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { View, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { SessionProvider, useSession } from '@/utils/ctx'
 import { SplashScreenController } from '@/utils/splash'
+import PrivacyPolicyModal from '@/components/PrivacyPolicyModal'
+import usePrivacyStore from '@/store/usePrivacyStore'
 
 function CloseButton() {
   const router = useRouter()
@@ -18,11 +20,24 @@ function CloseButton() {
 
 function RootLayoutContent() {
   const { session: isLoggedIn, isLoading } = useSession()
+  const { hasAcceptedPrivacy, acceptedVersion, acceptPrivacy } = usePrivacyStore()
+
+  /** 是否需要显示隐私政策弹窗 */
+  const needPrivacyConsent = !hasAcceptedPrivacy || acceptedVersion !== '1.0.0'
 
   if (isLoading) return null
 
   return (
     <SafeAreaProvider>
+      {/* 全屏隐私政策弹窗，未同意前阻止所有操作 */}
+      <PrivacyPolicyModal
+        visible={needPrivacyConsent}
+        onAccept={(version) => acceptPrivacy(version)}
+      />
+
+      {/* 未同意隐私政策前，用空白层阻止交互 */}
+      {needPrivacyConsent && <View style={styles.privacyOverlay} />}
+
       <Stack
         screenOptions={{
           headerTitleAlign: 'center',
@@ -115,3 +130,12 @@ export default function RootLayout() {
     </SessionProvider>
   )
 }
+
+const styles = StyleSheet.create({
+  privacyOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 999,
+    backgroundColor: 'transparent',
+    pointerEvents: 'auto',
+  },
+})

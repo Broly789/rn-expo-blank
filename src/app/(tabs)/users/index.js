@@ -71,7 +71,6 @@ export default function Users() {
         <Text style={styles.userName}>{nickname}</Text>
         <Text style={styles.userBio}>{bio || '这个人很懒，什么都没写~'}</Text>
       </TouchableOpacity>
-
       {/* ====== 学习统计卡片 ====== */}
       <View style={styles.statsRow}>
         <View style={styles.statCard}>

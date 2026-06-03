@@ -10,7 +10,7 @@ import {
   RefreshControl,
   TouchableOpacity,
 } from 'react-native'
-import Icon from '@assets/icon.png'
+import Icon from '@assets/icon-light.png'
 import HomeHeader from '@components/HomeHeader'
 import SearchBox from '@components/SearchBox'
 import CategoryChips from '@components/CategoryChips'
@@ -19,7 +19,6 @@ import QuickModuleGrid from '@components/QuickModuleGrid'
 import ArticleCard from '@components/ArticleCard'
 import TeacherCard from '@components/TeacherCard'
 import NoteCard from '@components/NoteCard'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 export default function App() {
   const [refreshing, setRefreshing] = useState(false)
