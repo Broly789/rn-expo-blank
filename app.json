@@ -8,11 +8,6 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "scheme": "solar",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.broly.solar",
@@ -36,15 +31,18 @@
     "plugins": [
       "expo-router",
       "expo-web-browser",
-      ["expo-video", {}],
+      [
+        "expo-video",
+        {}
+      ],
       "expo-secure-store",
       [
         "expo-splash-screen",
         {
           "backgroundColor": "#232323",
-          "image": "./assets/images/splash-light.png",
+          "image": "./assets/icon-dark.png",
           "dark": {
-            "image": "./assets/images/splash-dark.png",
+            "image": "./assets/icon-light.png",
             "backgroundColor": "#000000"
           },
           "imageWidth": 200
@@ -57,14 +55,22 @@
             "compileSdkVersion": 36,
             "targetSdkVersion": 36,
             "buildToolsVersion": "36.0.0",
-            "buildArchs": ["arm64-v8a"], // 默认打包时 会生成32位和64位的apk 这里只保留64位的apk
-            "usesCleartextTraffic": true // 支持http请求
+            "buildArchs": [
+              "arm64-v8a"
+            ],
+            "usesCleartextTraffic": true
           },
           "ios": {
             "deploymentTarget": "16.4"
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "2880ed94-47a9-4ba6-ab44-4d72ee8df8e8"
+      }
+    }
   }
 }
